@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class EmployeeInformationController {
 
@@ -31,7 +32,7 @@ public class EmployeeInformationController {
 
     // DELETE /users/{username}/todos/{id}
     @DeleteMapping("/employees/{id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable long id) {
+    public ResponseEntity<Void> deleteEmployee(@PathVariable long id) {
 
         hardcodedService.deleteById(id);
 
@@ -42,15 +43,15 @@ public class EmployeeInformationController {
     //Edit/Update a Todo
     //PUT /users/{user_name}/todos/{todo_id}
     @PutMapping("/employees/{id}")
-    public ResponseEntity<EmployeeInformation> updateTodo(@PathVariable long id, @RequestBody EmployeeInformation employeeInformation){
+    public ResponseEntity<EmployeeInformation> updateEmployee(@PathVariable long id, @RequestBody EmployeeInformation employeeInformation){
 
         EmployeeInformation employeeInformationUpdated = hardcodedService.save(employeeInformation);
 
         return new ResponseEntity<EmployeeInformation>(employeeInformation, HttpStatus.OK);
     }
 
-    @PostMapping("/employees/todos")
-    public ResponseEntity<Void> createTodo(@RequestBody EmployeeInformation employeeInformation){
+    @PostMapping("/employees/employees")
+    public ResponseEntity<Void> createEmployee(@RequestBody EmployeeInformation employeeInformation){
 
         EmployeeInformation createdEmployeeInformation = hardcodedService.save(employeeInformation);
 
