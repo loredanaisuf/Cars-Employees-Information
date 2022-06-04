@@ -5,11 +5,11 @@ import {TiDelete} from 'react-icons/ti';
 
 
 
-class CarInformation extends Component {
+class TrailInformation extends Component {
     constructor(props){
         super(props)
         this.state = {
-            cars: []
+            trucks: []
         }
     }
     
@@ -24,10 +24,11 @@ class CarInformation extends Component {
                         <th>Unique Identification Number</th>
                         <th>Registration Number</th>
                         <th>Brand</th>
-                        <th>Year of manufacture</th>
-                        <th>ITP validity</th>
-                        <th>RCA insurance validity</th>
-                        <th>Vinieta validity</th>
+                        <th>Year of Manufacture</th>
+                        <th>ITP Validity</th>
+                        <th>RCA Insurance Validity</th>
+                        <th>CMR Validity</th>
+                        <th>License validity</th>
                         <th>Options</th>
                     </tr>
                 </thead>
@@ -72,4 +73,4 @@ class CarInformation extends Component {
     
 }
  
-export default CarInformation;
+export default TrailInformation;

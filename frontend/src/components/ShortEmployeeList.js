@@ -1,13 +1,13 @@
 import React, { Component, useState } from 'react'
 import EmployeeInformationService from '../api/EmployeeInformationService'
 import { Table } from "react-bootstrap";
-import {AiFillEdit} from 'react-icons/ai';
+import {AiFillEdit, AiOutlinePlusCircle} from 'react-icons/ai';
 import {TiDelete} from 'react-icons/ti';
 import "bootstrap/dist/css/bootstrap.min.css";
 import PopupEmployees from './PopupEmployees';
 import { RiContrastDropLine } from 'react-icons/ri';
  
-class EmployeeInformation extends Component {
+class ShortEmployeeList extends Component {
     
     constructor(props) {
         console.log('constructor')
@@ -15,7 +15,9 @@ class EmployeeInformation extends Component {
         this.state = {
             employees: [],
             message: null,
-            isOpen: false
+            showModalPopup: false,
+            content: ''
+                  
         }
         this.deleteEmployeeClicked = this.deleteEmployeeClicked.bind(this)
         this.updateEmployeeClicked = this.updateEmployeeClicked.bind(this)
@@ -23,10 +25,15 @@ class EmployeeInformation extends Component {
         this.refreshEmployees = this.refreshEmployees.bind(this)
         //this.togglePopup = this.togglePopup.bind(this)
     }
+    isShowPopup = (status, employee) => {  
+        console.log("This is the employee sent from de shortEmployee page: " + employee)
+        this.setState({ 
+            showModalPopup: status,
+            employee: employee
+        });  
+      }; 
 
     render() {
-        console.log('render')
-        console.log("is open = " + this.state.isOpen)
         return (
             <div>
                 {this.state.message && <div class="alert alert-success">{this.state.message}</div>}
@@ -37,13 +44,7 @@ class EmployeeInformation extends Component {
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Employment Date</th>
-                                <th>Identity Card Validity</th>
-                                <th>Driver License Validity</th>
-                                <th>Driver Card Validity</th>
-                                <th>Driver Qualification Card Validity</th>
-                                <th>Psychological Opinion Validity</th>
-                                <th>Medical Opinion Validity</th>
-                                <th>Skills Sheet Validity</th>
+                                <th>More</th>
                                 <th>Options</th>
                             </tr>
                         </thead>
@@ -54,43 +55,42 @@ class EmployeeInformation extends Component {
                                         <tr key={employee.id}>
                                             <td>{employee.firstName}</td>
                                             <td>{employee.lastName}</td>
-                                            {/*<td>{moment(employee.employmentDate).format('DD-MM-YYYY')}</td>*/}
                                             <td>{employee.employmentDate}</td>
-                                            {/*<td>{moment(employee.identityCardValidity).format('DD-MM-YYYY')}</td>*/}
-                                            <td>{employee.identityCardValidity}</td>
-                                            <td>{employee.driverLicenseValidity}</td>
-                                            <td>{employee.driverCardValidity}</td>
-                                            <td>{employee.driverQualificationCardValidity}</td>
-                                            <td>{employee.psychologicalOpinionValidity}</td>
-                                            <td>{employee.medicalOpinionValidity}</td>
-                                            <td>{employee.skillsSheetsValidity}</td>
                                             <td>
-                                                <span>
-                                                    <button onClick={() => this.togglePopup()}>Open</button>
-                                                    
-                                                    {/* <AiFillEdit  onClick={() => this.togglePopup} style={{marginRight:15}}/>  */}
-                                                   {/* <AiFillEdit onClick={() => this.updateEmployeeClicked(employee.id)}/> */}
-                                                    <TiDelete onClick={() => this.deleteEmployeeClicked(employee.id)}/>
-                                                </span>
+                                                <AiOutlinePlusCircle onClick={() => this.isShowPopup(true, employee)}>Open</AiOutlinePlusCircle>
+                                                <PopupEmployees
+                                               
+                                                    firstName = {employee.firstName}
+                                                    showModalPopup={this.state.showModalPopup}  
+                                                    onPopupClose={this.isShowPopup}  
+                                                    content={this.state.content}
+                                                 />
+                                                
+                                            </td>
+                                            <td>        
+                                                {/* <AiFillEdit  onClick={() => this.togglePopup} style={{marginRight:15}}/>  */}
+                                                <AiFillEdit onClick={() => this.updateEmployeeClicked(employee.id)}/>
+                                                <TiDelete onClick={() => this.deleteEmployeeClicked(employee.id)}/>
                                             </td>
                                         </tr>
                                 )
                             }
                         </tbody>
                     </Table>
+                    {/* {
+                        this.state.isOpen &&
+                            <PopupEmployees
+                            showModalPopup={this.state.showModalPopup}  
+                            onPopupClose={this.isShowPopup}  
+                            content={this.state.content}
+                        />
+                    } */}
+
+                        
                     <div className="row">
                         <button className="btn" style = {{background : '#206a5d',color: '#fff'}} onClick={this.addEmployeeClicked}>Add</button>
                     </div>
-                </div>
-                {/* <PopupEmployees content={<>
-                             <b>Design your Popup</b>
-                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                             <button>Test button</button>
-                         </>}
-                         handleClose={this.togglePopup}/> */}
-                
-                   
-                
+                </div>                           
             </div>
         )
     }
@@ -101,22 +101,22 @@ class EmployeeInformation extends Component {
     // }
     
 
-    // componentWillUnmount() {
-    //     console.log('componentWillUnmount')
-    // }
+    componentWillUnmount() {
+        console.log('componentWillUnmount')
+    }
 
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     console.log('shouldComponentUpdate')
-    //     console.log(nextProps)
-    //     console.log(nextState)
-    //     return true
-    // }
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('shouldComponentUpdate')
+        console.log(nextProps)
+        console.log(nextState)
+        return true
+    }
 
-    // componentDidMount() {
-    //     console.log('componentDidMount')
-    //     this.refreshEmployees();
-    //     console.log(this.state)
-    // }
+    componentDidMount() {
+        console.log('componentDidMount')
+        this.refreshEmployees();
+        console.log(this.state)
+    }
 
     refreshEmployees() {
         //let username = AuthenticationService.getLoggedInUserName()
@@ -163,4 +163,4 @@ class EmployeeInformation extends Component {
     }
 }
 
-export default  EmployeeInformation;
+export default  ShortEmployeeList;
