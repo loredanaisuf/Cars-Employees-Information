@@ -12,6 +12,9 @@ import {RiCalendarEventFill} from 'react-icons/ri';
 import {HiOutlineLogout} from 'react-icons/hi';
 
 class CustomNavbar extends Component {
+    constructor(props){
+        super(props)
+    }
     profile = {
         color: "#fff",
         backgroundColor: "#206a5d",
@@ -62,18 +65,18 @@ class CustomNavbar extends Component {
                        </Nav>
                         <Nav>
                     
-                            {isUserLoggedId && <Nav.Link placement="end" style={this.navItems} href="#action1"> <FaUser /> My profile</Nav.Link>}
-                            {isUserLoggedId && <Nav.Link > <Link to="/calendar"  style={this.navItems}> <RiCalendarEventFill /> Calendar</Link></Nav.Link>}
+                            {/* {isUserLoggedId && <Nav.Link placement="end" style={this.navItems} href="#action1"> <FaUser /> My profile</Nav.Link>} */}
+                            {isUserLoggedId && <Nav.Link  href="/calendar"  style={this.navItems}> <RiCalendarEventFill /> Calendar</Nav.Link>}
                             {isUserLoggedId && <NavDropdown  title={<span style={this.navItems} >Information</span>} id="dropdownItems"  >
+                                <NavDropdown.Item  style={this.dropdownItems} href="/employees"> <ImUsers /> Employees</NavDropdown.Item>
+                                <NavDropdown.Divider />
                                 <NavDropdown.Item  style={this.dropdownItems} href="/cars">  <FaCar /> Cars</NavDropdown.Item>
                                 <NavDropdown.Item style={this.dropdownItems}  href="/trucks"> <FaTruckMoving /> Trucks </NavDropdown.Item>
-                                <NavDropdown.Item style={this.dropdownItems}  href="/trails"> <FaTrailer /> Trails </NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item  style={this.dropdownItems} href="/employees"> <ImUsers /> Employees</NavDropdown.Item>
+                                <NavDropdown.Item style={this.dropdownItems}  href="/trails"> <FaTrailer /> Trails </NavDropdown.Item>                              
                             </NavDropdown>}
 
-                            {!isUserLoggedId && <Nav.Link><Link to="/login" style={this.navItems}><AiOutlineLogin /> Log in </Link></Nav.Link>}
-                            {!isUserLoggedId && <Nav.Link> <Link to="/register" style={this.navItems}><MdOutlineAccountBox /> Sign up</Link></Nav.Link>}
+                            {!isUserLoggedId && <Nav.Link  href = "/login" style={this.navItems}><AiOutlineLogin /> Log in</Nav.Link>}
+                            {!isUserLoggedId && <Nav.Link  href = "/registerCompany" style={this.navItems} ><MdOutlineAccountBox /> Sign up </Nav.Link>}
                             {isUserLoggedId && <Nav.Link href="/login"  style={{color:"#fff", fontWeight: "bold"}} onClick = {AuthentificationService.logout}> <HiOutlineLogout size='30' /> </Nav.Link>}
                     
                     </Nav>

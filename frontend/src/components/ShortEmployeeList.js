@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react'
-import EmployeeInformationService from '../api/EmployeeInformationService'
+import EmployeeDataService from '../api/EmployeeDataService'
 import { Table } from "react-bootstrap";
 import {AiFillEdit, AiOutlinePlusCircle} from 'react-icons/ai';
 import {TiDelete} from 'react-icons/ti';
@@ -120,7 +120,7 @@ class ShortEmployeeList extends Component {
 
     refreshEmployees() {
         //let username = AuthenticationService.getLoggedInUserName()
-        EmployeeInformationService.retrieveAllEmployees()
+        EmployeeDataService.retrieveAllEmployees()
             .then(
                 response => {
                     //console.log(response);
@@ -132,7 +132,7 @@ class ShortEmployeeList extends Component {
     deleteEmployeeClicked(id) {
         //let username = AuthenticationService.getLoggedInUserName()
         //console.log(id + " " + username);
-        EmployeeInformationService.deleteEmployee(id)
+        EmployeeDataService.deleteEmployee(id)
             .then(
                 response => {
                     this.setState({ message: `Delete of employee ${id} Successful` })

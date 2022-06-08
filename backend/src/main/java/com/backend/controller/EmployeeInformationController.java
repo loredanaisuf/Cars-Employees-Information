@@ -40,7 +40,7 @@ public class EmployeeInformationController {
     }
 
 
-    //Edit/Update a Todo
+    //Edit/Update a Trail
     //PUT /users/{user_name}/todos/{todo_id}
     @PutMapping("/employees/{id}")
     public ResponseEntity<EmployeeInformation> updateEmployee(@PathVariable long id, @RequestBody EmployeeInformation employeeInformation){

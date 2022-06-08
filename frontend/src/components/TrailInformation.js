@@ -1,70 +1,115 @@
 import React, { Component, useState } from 'react';
-import PopupEmployees from './PopupEmployees';
 import { Table } from "react-bootstrap";
-import {TiDelete} from 'react-icons/ti';
-
-
+import {AiFillEdit, AiFillDelete} from 'react-icons/ai';
+import moment from 'moment'
+import TrailDataService from '../api/TrailDataService';
+import AuthenticationService from './AuthentificationService'
 
 class TrailInformation extends Component {
     constructor(props){
         super(props)
         this.state = {
-            trucks: []
+            trails: [],
+            message: null
         }
+        
+        this.deleteTrail = this.deleteTrail.bind(this)
+        this.updateTrail = this.updateTrail.bind(this)
+        this.addTrail = this.addTrail.bind(this)
+        this.refreshTrails = this.refreshTrails.bind(this)
     }
-    
+
+    componentWillUnmount() {
+        console.log('componentWillUnmount')
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('shouldComponentUpdate')
+        console.log(nextProps)
+        console.log(nextState)
+        return true
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount')
+        this.refreshTrails();
+        console.log(this.state)
+    }
+
+    refreshTrails() {
+        let username = AuthenticationService.getLoggedInUserName()
+        TrailDataService.retrieveAllTrails(username)
+            .then(
+                response => {
+                    this.setState({ trails: response.data })
+                }
+            )
+    }
+
+    deleteTrail(id) {
+        let username = AuthenticationService.getLoggedInUserName()
+        //console.log(id + " " + username);
+        TrailDataService.deleteTrail(username, id)
+            .then(
+                response => {
+                    this.setState({ message: `Delete of trail ${id} Successful` })
+                    this.refreshTrails()
+                }
+            )
+
+    }
+
+    addTrail() {
+        this.props.history.push(`/trails/-1`)
+    }
+
+    updateTrail(id) {
+        console.log('update ' + id)
+        this.props.history.push(`/trails/${id}`)
+    } 
     
  
     render(){
         return(
-            <div className="container" style={{marginTop:50}}>
+            <div className="container" style={{marginTop:50,  overflow: 'scroll'}}>
             <Table striped bordered hover>
-                <thead>
+                <thead  style={{verticalAlign: 'middle'}}>
                     <tr>
                         <th>Unique Identification Number</th>
                         <th>Registration Number</th>
                         <th>Brand</th>
-                        <th>Year of Manufacture</th>
+                        <th>Fabrication Year</th>
                         <th>ITP Validity</th>
                         <th>RCA Insurance Validity</th>
-                        <th>CMR Validity</th>
-                        <th>License validity</th>
+                        <th>CMR Insurance Validity</th>
                         <th>Options</th>
                     </tr>
                 </thead>
-                {/* <tbody>
+                <tbody>
                     {
-                        this.state.employees.map(
-                            employee =>
-                                <tr key={employee.id}>
-                                    <td>{employee.firstName}</td>
-                                    <td>{employee.lastName}</td>
-                                    {/*<td>{moment(employee.employmentDate).format('DD-MM-YYYY')}</td>*/}
-                                    {/* <td>{employee.employmentDate}</td> */}
-                                    {/*<td>{moment(employee.identityCardValidity).format('DD-MM-YYYY')}</td>*/}
-                                    {/* <td>{employee.identityCardValidity}</td>
-                                    <td>{employee.driverLicenseValidity}</td>
-                                    <td>{employee.driverCardValidity}</td>
-                                    <td>{employee.driverQualificationCardValidity}</td>
-                                    <td>{employee.psychologicalOpinionValidity}</td>
-                                    <td>{employee.medicalOpinionValidity}</td>
-                                    <td>{employee.skillsSheetsValidity}</td>
-                                    <td>
-                                        <span>
-                                            <button onClick={() => this.togglePopup()}>Open</button>
-                                            
-                                            {/* <AiFillEdit  onClick={() => this.togglePopup} style={{marginRight:15}}/>  */}
-                                           {/* <AiFillEdit onClick={() => this.updateEmployeeClicked(employee.id)}/> */}
-                                           {/* <TiDelete />
+                        this.state.trails.map(
+                            trail =>
+                                <tr key={trail.id}>
+                                    <td>{trail.uniqueIdentificationNumber}</td>
+                                    <td>{trail.registrationNumber}</td>
+                                    <td>{trail.brand}</td> 
+                                    <td>{trail.fabricationYear}</td>
+                                    <td>{moment(trail.itpValidity).format('DD-MM-YYYY')}</td>  
+                                    <td>{moment(trail.rcaInsuranceValidity).format('DD-MM-YYYY')}</td>
+                                    <td>{moment(trail.cmrInsuranceValidity).format('DD-MM-YYYY')}</td>
+                                    <td >
+                                        <span style={{alignItems:'center'}}>
+                                            <AiFillEdit onClick={() => this.updateTrail(trail.id)}/> 
+                                            <AiFillDelete onClick={() => this.deleteTrail(trail.id)}/>
                                         </span>
                                     </td>
                                 </tr>
                         )
                     }
-                </tbody> */} 
+                </tbody> 
             </Table>
             <div className="row">
-                <button className="btn" style = {{background : '#206a5d',color: '#fff'}} >Add</button>
+                <button className="btn" style = {{background : '#206a5d',color: '#fff'}} onClick={this.addTrail} >Add</button>
             </div>
         </div>
         ) 
