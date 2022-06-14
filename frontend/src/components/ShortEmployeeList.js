@@ -1,11 +1,10 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import EmployeeDataService from '../api/EmployeeDataService'
 import { Table } from "react-bootstrap";
 import {AiFillEdit, AiOutlinePlusCircle} from 'react-icons/ai';
 import {TiDelete} from 'react-icons/ti';
 import "bootstrap/dist/css/bootstrap.min.css";
 import PopupEmployees from './PopupEmployees';
-import { RiContrastDropLine } from 'react-icons/ri';
  
 class ShortEmployeeList extends Component {
     

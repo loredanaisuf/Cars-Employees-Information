@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Formik, Form, Field, ErrorMessage, Label } from 'formik';
-import AuthenticationService from './AuthentificationService';
+import AuthenticationService, { TOKEN } from '../AuthentificationService';
 import TrailDataService from '../api/TrailDataService';
 import moment from 'moment'
 
@@ -28,8 +28,9 @@ class AddTrail extends Component {
         }
 
         let username = AuthenticationService.getLoggedInUserName()
+        let token = localStorage.getItem(TOKEN)
 
-        TrailDataService.retrieveTrail(username, this.state.id)
+        TrailDataService.retrieveTrail(username, this.state.id, token)
             .then(response => this.setState({
                 uniqueIdentificationNumber: response.data.uniqueIdentificationNumber,
                 registrationNumber: response.data.registrationNumber,
@@ -54,6 +55,7 @@ class AddTrail extends Component {
 
 	onSubmit(values){
         let username = AuthenticationService.getLoggedInUserName()
+        let token = localStorage.getItem(TOKEN)
 
 		console.log(values);
 		let trail = {
@@ -68,10 +70,10 @@ class AddTrail extends Component {
         }
 		console.log(trail)
         if (this.state.id == -1) {
-            TrailDataService.createTrail(username, trail)
+            TrailDataService.createTrail(username, trail, token)
                 .then(() => this.props.history.push('/trails'))
         } else {
-            TrailDataService.updateTrail(username, this.state.id, trail)
+            TrailDataService.updateTrail(username, this.state.id, trail, token)
                 .then(() => this.props.history.push('/trails'))
         }
 		

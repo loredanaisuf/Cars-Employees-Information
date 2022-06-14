@@ -1,9 +1,9 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import EmployeeDataService from '../api/EmployeeDataService'
 import { Table } from "react-bootstrap";
 import {AiFillEdit, AiFillDelete} from 'react-icons/ai';
 import "bootstrap/dist/css/bootstrap.min.css";
-import AuthentificationService from './AuthentificationService';
+import AuthentificationService, { TOKEN } from '../AuthentificationService';
 import moment from 'moment';
  
 class EmployeeInformation extends Component {
@@ -41,7 +41,8 @@ class EmployeeInformation extends Component {
 
     refreshEmployees() {
         let username = AuthentificationService.getLoggedInUserName()
-        EmployeeDataService.retrieveEmployees(username)
+        let token = localStorage.getItem(TOKEN)
+        EmployeeDataService.retrieveEmployees(username, token)
             .then(
                 response => {
                     this.setState({ employees: response.data })
@@ -51,8 +52,9 @@ class EmployeeInformation extends Component {
 
     deleteEmployee(id) {
         let username = AuthentificationService.getLoggedInUserName()
+        let token = localStorage.getItem(TOKEN)
       
-        EmployeeDataService.deleteEmployee(username, id)
+        EmployeeDataService.deleteEmployee(username, id, token)
             .then(
                 response => {
                     this.setState({ message: `Delete of employee ${id} Successful` })

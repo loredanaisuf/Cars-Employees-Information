@@ -3,25 +3,50 @@ import { API_URL } from '../Constants'
 
 class TrailDataService {
 
-    retrieveAllTrails(name) {
-        return axios.get(`${API_URL}/${name}/trails`);
+    retrieveAllTrails(name, token) {
+        return axios.get(`${API_URL}/${name}/trails`,
+        {
+            headers: {
+                authorization: 'Bearer ' + token 
+            }
+        });
     }
 
-    retrieveTrail(name, id) {
-        return axios.get(`${API_URL}/${name}/trails/${id}`);
+    retrieveTrail(name, id, token) {
+        return axios.get(`${API_URL}/${name}/trails/${id}`,
+        {
+            headers: {
+                authorization: 'Bearer ' + token 
+            }
+        });
     }
 
-    deleteTrail(name, id) {
-        return axios.delete(`${API_URL}/${name}/trails/${id}`);
+    deleteTrail(name, id, token) {
+        return axios.delete(`${API_URL}/${name}/trails/${id}`,
+        {
+            headers: {
+                authorization: 'Bearer ' + token 
+            }
+        });
     }
 
-    updateTrail(name, id, trail) {
-        return axios.put(`${API_URL}/${name}/trails/${id}`, trail);
+    updateTrail(name, id, trail, token) {
+        return axios.put(`${API_URL}/${name}/trails/${id}`, trail,
+        {
+            headers: {
+                authorization: 'Bearer ' + token 
+            }
+        });
     }
 
-    createTrail(name, trail) {
+    createTrail(name, trail, token) {
         console.log("transmited trail:" + trail.ITPValidity)
-        return axios.post(`${API_URL}/${name}/trails/`, trail);
+        return axios.post(`${API_URL}/${name}/trails/`, trail,
+        {
+            headers: {
+                authorization: 'Bearer ' + token 
+            }
+        });
     }
 
 }

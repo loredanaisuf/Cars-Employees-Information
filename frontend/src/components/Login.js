@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUserAlt } from 'react-icons/fa';
 import { Container } from 'react-bootstrap';
-import AuthentificationService from './AuthentificationService';
+import AuthentificationService from '../AuthentificationService';
 
 class Login extends Component {
     constructor(props){
@@ -24,20 +24,31 @@ class Login extends Component {
 	}
 
 	login(){
-		console.log(this.state.username + " : " + this.state.password);
-		if(this.state.username === 'lori' && this.state.password === 'lori'){
-			//this.props.history.push(`/employees/${this.state.username}`);
-			AuthentificationService.registerSuccessfulLogIn(this.state.username, this.state.password);
-			this.props.history.push("/cars");
-			console.log("Succesfull");
-			this.setState({successLogIn : true})
-			this.setState({failedLogIn : false})
-		} else {
-			console.log("Failed");
-			this.setState({successLogIn : false})
-			this.setState({failedLogIn : true})
-		}
-		
+		// console.log(this.state.username + " : " + this.state.password);
+		// if(this.state.username === 'lori' && this.state.password === 'lori'){
+		// 	//this.props.history.push(`/employees/${this.state.username}`);
+		// 	AuthentificationService.registerSuccessfulLogIn(this.state.username, this.state.password);
+		// 	this.props.history.push("/cars");
+		// 	console.log("Succesfull");
+		// 	this.setState({successLogIn : true})
+		// 	this.setState({failedLogIn : false})
+		// } else {
+		// 	console.log("Failed");
+		// 	this.setState({successLogIn : false})
+		// 	this.setState({failedLogIn : true})
+		// }
+		console.log("start log in")
+		AuthentificationService
+		.executeJwtAuthenticationService(this.state.username, this.state.password)
+		.then((response) => {
+			console.log("after authetification service")
+			AuthentificationService.registerSuccessfulLoginForJwt(this.state.username, response.data.token)
+			console.log("loggedIn")
+			this.props.history.push(`/employees`)
+		}).catch(() => {
+			this.setState({ successLogIn: false })
+			this.setState({ failedLogIn: true })
+		})
 	}
     
     render(){

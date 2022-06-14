@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from "react-bootstrap";
 import {AiFillEdit, AiFillDelete} from 'react-icons/ai';
-import AuthentificationService from './AuthentificationService';
+import AuthentificationService, { TOKEN } from '../AuthentificationService';
 import CarDataService from '../api/CarDataService';
 import moment from 'moment';
 
@@ -38,7 +38,8 @@ class CarInformation extends Component {
 
     refreshCars() {
         let username = AuthentificationService.getLoggedInUserName()
-        CarDataService.retrieveCars(username)
+        let token = localStorage.getItem(TOKEN)
+        CarDataService.retrieveCars(username, token)
             .then(
                 response => {
                     this.setState({ cars: response.data })
@@ -48,8 +49,9 @@ class CarInformation extends Component {
 
     deleteCar(id) {
         let username = AuthentificationService.getLoggedInUserName()
+        let token = localStorage.getItem(TOKEN)
         //console.log(id + " " + username);
-        CarDataService.deleteCar(username, id)
+        CarDataService.deleteCar(username, id, token)
             .then(
                 response => {
                     this.setState({ message: `Delete of car ${id} Successful` })

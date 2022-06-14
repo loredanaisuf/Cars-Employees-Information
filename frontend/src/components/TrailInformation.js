@@ -1,9 +1,9 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { Table } from "react-bootstrap";
 import {AiFillEdit, AiFillDelete} from 'react-icons/ai';
 import moment from 'moment'
 import TrailDataService from '../api/TrailDataService';
-import AuthenticationService from './AuthentificationService'
+import AuthenticationService, { TOKEN } from '../AuthentificationService'
 
 class TrailInformation extends Component {
     constructor(props){
@@ -38,7 +38,8 @@ class TrailInformation extends Component {
 
     refreshTrails() {
         let username = AuthenticationService.getLoggedInUserName()
-        TrailDataService.retrieveAllTrails(username)
+        let token = localStorage.getItem(TOKEN)
+        TrailDataService.retrieveAllTrails(username, token)
             .then(
                 response => {
                     this.setState({ trails: response.data })
@@ -48,8 +49,9 @@ class TrailInformation extends Component {
 
     deleteTrail(id) {
         let username = AuthenticationService.getLoggedInUserName()
+        let token = localStorage.getItem(TOKEN)
         //console.log(id + " " + username);
-        TrailDataService.deleteTrail(username, id)
+        TrailDataService.deleteTrail(username, id, token)
             .then(
                 response => {
                     this.setState({ message: `Delete of trail ${id} Successful` })

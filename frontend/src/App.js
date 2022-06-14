@@ -1,8 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import {Switch} from 'react-router-dom';
-import VisitorsLinks from './components/VisitorsLinks';
-import AuthLinks from './components/AuthLinks';
 import EmployeeInformation from './components/EmployeeInformation'
 import CarInformation from './components/CarInformation'
 import ShortEmployeeList from './components/ShortEmployeeList';
@@ -12,7 +10,6 @@ import RegisterUser from './components/RegisterUser';
 import TruckInformation from './components/TruckInformation';
 import TrailInformation from './components/TrailInformation';
 import AuthenticatedRoute from './components/AuthenticatedRoute.js';
-import AuthentificationService from './components/AuthentificationService';
 import CustomNavbar from './components/Navbar';
 import AddTrail from './components/AddTrail';
 import AddCar from './components/AddCar';

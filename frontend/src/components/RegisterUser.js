@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaUserAlt } from 'react-icons/fa';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import RegistrationService from '../api/RegistrationService';
-import AuthentificationService from './AuthentificationService';
+import AuthentificationService from '../AuthentificationService';
 
 class RegisterUser extends Component {
     constructor(props){

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Formik, Form, Field, ErrorMessage, Label } from 'formik';
-import AuthenticationService from './AuthentificationService';
+import AuthenticationService, { TOKEN } from '../AuthentificationService';
 import CarDataService from '../api/CarDataService';
 import moment from 'moment';
 
@@ -28,8 +28,9 @@ class AddCar extends Component {
         }
 
         let username = AuthenticationService.getLoggedInUserName()
+        let token = localStorage.getItem(TOKEN)
 
-        CarDataService.retrieveCar(username, this.state.id)
+        CarDataService.retrieveCar(username, this.state.id, token)
             .then(response => this.setState({
                 uniqueIdentificationNumber: response.data.uniqueIdentificationNumber,
                 registrationNumber: response.data.registrationNumber,
@@ -54,6 +55,7 @@ class AddCar extends Component {
 
 	onSubmit(values){
         let username = AuthenticationService.getLoggedInUserName()
+        let token = localStorage.getItem(TOKEN)
 
 		console.log(values);
 		let car = {
@@ -68,10 +70,10 @@ class AddCar extends Component {
         }
 		console.log(car)
         if (this.state.id == -1) {
-            CarDataService.createCar(username, car)
+            CarDataService.createCar(username, car, token)
                 .then(() => this.props.history.push('/cars'))
         } else {
-            CarDataService.updateCar(username, this.state.id, car)
+            CarDataService.updateCar(username, this.state.id, car, token)
                 .then(() => this.props.history.push('/cars'))
         }
 		
@@ -97,8 +99,6 @@ class AddCar extends Component {
 					{
 						(props) => (
 							<Form>
-								<ErrorMessage name="companyName" component="div"
-									className="alert alert-warning" />
 								<fieldset className="form-group" style={inputStyle}>
                                     <label>Unique Identification Number</label>
 									<Field className="form-control" type="text" name="uniqueIdentificationNumber"/>

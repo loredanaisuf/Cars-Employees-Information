@@ -1,10 +1,7 @@
 import React, { Component} from 'react';
-import { Button, Navbar, Nav, NavDropdown, Container, Offcanvas, Form, FormControl } from 'react-bootstrap';
-import AuthentificationService from './AuthentificationService';
-import VisitorsLinks from './VisitorsLinks';
-import AuthLinks from './AuthLinks';
-import { Link } from 'react-router-dom';
-import { AiOutlineLogin,  AiOutlineLogout } from 'react-icons/ai';
+import { Navbar, Nav, NavDropdown, Container, Form, FormControl } from 'react-bootstrap';
+import AuthentificationService from '../AuthentificationService';
+import { AiOutlineLogin } from 'react-icons/ai';
 import { MdOutlineAccountBox } from 'react-icons/md';
 import {FaTruckMoving, FaTrailer, FaCar, FaUser} from 'react-icons/fa';
 import {ImUsers} from 'react-icons/im';
@@ -37,11 +34,11 @@ class CustomNavbar extends Component {
         color: "#206a5d",
     };
     render(){
-        const isUserLoggedId = AuthentificationService.isUserLoggedId();
+        const isUserLoggedId = AuthentificationService.isUserLoggedIn();
         console.log(" Navbar : " + isUserLoggedId );
         return(
             <>
-              <Navbar expand='lg' bg="navbar" style={{backgroundColor: "#206a5d"}}  variant="dark">
+                <Navbar expand='lg' bg="navbar" style={{backgroundColor: "#206a5d"}}  variant="dark">
                 <Container fluid>
                     <Navbar.Brand href="#"style={this.logo} >C&E Information</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
@@ -62,7 +59,7 @@ class CustomNavbar extends Component {
                                 aria-label="Search"
                                 />
                             </Form>
-                       </Nav>
+                        </Nav>
                         <Nav>
                     
                             {/* {isUserLoggedId && <Nav.Link placement="end" style={this.navItems} href="#action1"> <FaUser /> My profile</Nav.Link>} */}

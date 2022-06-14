@@ -3,24 +3,49 @@ import {API_URL} from '../Constants.js';
 
 class EmployeeDataService {
 
-    retrieveEmployees(name) {
-        return axios.get(`${API_URL}/${name}/employees`);
+    retrieveEmployees(name, token) {
+        return axios.get(`${API_URL}/${name}/employees`,
+        {
+            headers: {
+                authorization: 'Bearer ' + token 
+            }
+        });
     }
 
-    retrieveEmployee(name, id) {
-        return axios.get(`${API_URL}/${name}/employees/${id}`);
+    retrieveEmployee(name, id, token) {
+        return axios.get(`${API_URL}/${name}/employees/${id}`,
+        {
+            headers: {
+                authorization: 'Bearer ' + token 
+            }
+        });
     }
 
-    deleteEmployee(name,id) {
-        return axios.delete(`${API_URL}/${name}/employees/${id}`);
+    deleteEmployee(name,id, token) {
+        return axios.delete(`${API_URL}/${name}/employees/${id}`,
+        {
+            headers: {
+                authorization: 'Bearer ' + token 
+            }
+        });
     }
 
-    updateEmployee(name, id, employee) {
-        return axios.put(`${API_URL}/${name}/employees/${id}`, employee);
+    updateEmployee(name, id, employee, token) {
+        return axios.put(`${API_URL}/${name}/employees/${id}`, employee,
+        {
+            headers: {
+                authorization: 'Bearer ' + token 
+            }
+        });
     }
 
-    createEmployee(name, employee) {
-        return axios.post(`${API_URL}/${name}/employees/`, employee);
+    createEmployee(name, employee, token) {
+        return axios.post(`${API_URL}/${name}/employees/`, employee,
+        {
+            headers: {
+                authorization: 'Bearer ' + token 
+            }
+        });
     }
 
 }

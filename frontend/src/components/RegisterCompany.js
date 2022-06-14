@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaUserAlt } from 'react-icons/fa';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import RegistrationService from '../api/RegistrationService';
-import AuthentificationService from './AuthentificationService';
+import AuthentificationService from '../AuthentificationService';
 
 
 class Register extends Component {
@@ -24,16 +24,18 @@ class Register extends Component {
 
 	validate(values) {
         let errors = {}
-        if (!values.companyName) {
-            errors.description = 'Enter a Company Name'
-        } else if (values.companyName.length < 5) {
-            errors.companyName = 'Enter atleast 5 Characters in Description'
+        if (!values.username) {
+            errors.username = 'Enter a username'
+        } 
+		if (values.password.length < 12) {
+            errors.password = 'Enter a strong password with at least 12 characters'
         }
-		this.validateUsername(values.username);
-    
+	
+		if(values.password !== values.confirmationPassword){
+			errors.confirmationPassword = 'Passwords do not match'
+		}	
 
         return errors
-
     }
 
 	validateUsername(username){
@@ -86,8 +88,6 @@ class Register extends Component {
 							<Form>
 								<ErrorMessage name="companyName" component="div"
 									className="alert alert-warning" />
-								<ErrorMessage name="targetDate" component="div"
-									className="alert alert-warning" />
 								<fieldset className="form-group" style={inputStyle}>
 									<Field className="form-control" type="text" name="companyName" placeholder="Company Name"/>
 								</fieldset>
@@ -97,12 +97,18 @@ class Register extends Component {
 								<fieldset className="form-group" style={inputStyle}>
 									<Field className="form-control" type="text" name="registrationCode" placeholder="Registration Code"/>
 								</fieldset>
+								<ErrorMessage name="username" component="div"
+									className="alert alert-warning" />
 								<fieldset className="form-group" style={inputStyle}>
 									<Field className="form-control" type="text" name="username" placeholder="Username"/>
 								</fieldset>
+								<ErrorMessage name="password" component="div"
+									className="alert alert-warning" />
 								<fieldset className="form-group" style={inputStyle}>
 									<Field className="form-control" type="password" name="password" placeholder="Password"/>
 								</fieldset>
+								<ErrorMessage name="confirmationPassword" component="div"
+									className="alert alert-warning" />
 								<fieldset className="form-group" style={inputStyle}>
 									<Field className="form-control" type="password" name="confirmationPassword" placeholder="Confirmation Password" />
 								</fieldset>

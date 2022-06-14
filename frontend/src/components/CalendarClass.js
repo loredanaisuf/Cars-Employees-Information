@@ -7,10 +7,9 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import "../fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
-import events from "./events";
 import { Component } from "react";
 import CalendarDataService from "../api/CalendarDataService";
-import AuthentificationService from "./AuthentificationService";
+import AuthentificationService, { TOKEN } from "../AuthentificationService";
 
 
 class CalendarClass extends Component {
@@ -31,7 +30,8 @@ class CalendarClass extends Component {
 
     retrieveEvents(){
         let username = AuthentificationService.getLoggedInUserName()
-        CalendarDataService.retrieveEvents(username)
+        let token = localStorage.getItem(TOKEN)
+        CalendarDataService.retrieveEvents(username, token)
             .then(
                 response => {
                     this.setState({ stateEvents: response.data })

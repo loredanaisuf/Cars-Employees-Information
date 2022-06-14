@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Formik, Form, Field, ErrorMessage, Label } from 'formik';
-import AuthenticationService from './AuthentificationService';
+import AuthenticationService, { TOKEN } from '../AuthentificationService';
 import EmployeeDataService from '../api/EmployeeDataService';
 import moment from 'moment';
 
@@ -33,8 +33,9 @@ class AddEmployee extends Component {
         }
 
         let username = AuthenticationService.getLoggedInUserName()
+        let token = localStorage.getItem(TOKEN)
 
-        EmployeeDataService.retrieveEmployee(username, this.state.id)
+        EmployeeDataService.retrieveEmployee(username, this.state.id, token)
             .then(response => this.setState({
                 firstName: response.data.firstName,
                 lastName: response.data.lastName,
@@ -64,6 +65,7 @@ class AddEmployee extends Component {
 
 	onSubmit(values){
         let username = AuthenticationService.getLoggedInUserName()
+        let token = localStorage.getItem(TOKEN)
 
 		console.log(values);
 		let employee = {
@@ -83,10 +85,10 @@ class AddEmployee extends Component {
         }
 		console.log(employee)
         if (this.state.id == -1) {
-            EmployeeDataService.createEmployee(username, employee)
+            EmployeeDataService.createEmployee(username, employee, token)
                 .then(() => this.props.history.push('/employees'))
         } else {
-            EmployeeDataService.updateEmployee(username, this.state.id, employee)
+            EmployeeDataService.updateEmployee(username, this.state.id, employee, token)
                 .then(() => this.props.history.push('/employees'))
         }
 		
@@ -102,71 +104,69 @@ class AddEmployee extends Component {
             <div className="container">
 			<h1 className="large" style={{color: '#206a5d'}}>Employee Information</h1>
 
-			<Formik 
-					initialValues={{ firstName, lastName, employmentDate, identityCardValidity, driverLicenseValidity, driverCardValidity, driverQualificationCardValidity, psychologicalOpinionValidity, medicalOpinionValidity, skillsSheetsValidity, username,  password}}
-					onSubmit={this.onSubmit}
-					validateOnBlur={false}
-					validate={this.validate}
-					enableReinitialize={true}
-				>
-					{
-						(props) => (
-							<Form>
-								<ErrorMessage name="companyName" component="div"
-									className="alert alert-warning" />
-								<fieldset className="form-group" style={inputStyle}>
-                                    <label>First Name</label>
-									<Field className="form-control" type="text" name="firstName"/>
-								</fieldset>
-								<fieldset className="form-group" style={inputStyle}>
-                                    <label>Last Name</label>
-									<Field className="form-control" type="text" name="lastName" />
-								</fieldset>
-								<fieldset className="form-group" style={inputStyle}>
-                                    <label>Employment Date</label>
-									<Field className="form-control" type="date" name="employmentDate"/>
-								</fieldset>
-								<fieldset className="form-group" style={inputStyle}>
-                                    <label>Identity Card Validity</label>
-									<Field className="form-control" type="date" name="identityCardValidity"/>
-								</fieldset>
-								<fieldset className="form-group" style={inputStyle}>
-                                    <label> Driver License Validity </label>
-									<Field className="form-control" type="date" name="driverLicenseValidity"/>
-								</fieldset>
-								<fieldset className="form-group" style={inputStyle}>
-                                    <label> Driver Card Validity </label>
-									<Field className="form-control" type="date" name="driverCardValidity"/>
-								</fieldset>
-                                <fieldset className="form-group" style={inputStyle}>
-                                    <label> Driver Qualification Card Validity </label>
-									<Field className="form-control" type="date" name="driverQualificationCardValidity"/>
-								</fieldset>
-                                <fieldset className="form-group" style={inputStyle}>
-                                    <label> Psychological Opinion Validity </label>
-									<Field className="form-control" type="date" name="psychologicalOpinionValidity"/>
-								</fieldset>
-                                <fieldset className="form-group" style={inputStyle}>
-                                    <label> Medical Opinion Validity </label>
-									<Field className="form-control" type="date" name="medicalOpinionValidity"/>
-								</fieldset>
-                                <fieldset className="form-group" style={inputStyle}>
-                                    <label> Skills Sheets Validity </label>
-									<Field className="form-control" type="date" name="skillsSheetsValidity"/>
-								</fieldset>
-                                <fieldset className="form-group" style={inputStyle}>
-                                    <label> Username </label>
-									<Field className="form-control" type="text" name="username"/>
-								</fieldset>
-                                <fieldset className="form-group" style={inputStyle}>
-                                    <label> Password </label>
-									<Field className="form-control" type="text" name="password"/>
-								</fieldset>
-								<button className="btn btn-primary" type="submit">Save</button>
-							</Form>
-						)
-					}
-				</Formik>
+<Formik 
+    initialValues={{ firstName, lastName, employmentDate, identityCardValidity, driverLicenseValidity, driverCardValidity, driverQualificationCardValidity, psychologicalOpinionValidity, medicalOpinionValidity, skillsSheetsValidity, username,  password}}
+    onSubmit={this.onSubmit}
+    validateOnBlur={false}
+    validate={this.validate}
+    enableReinitialize={true}
+>
+    {
+        (props) => (
+            <Form>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label>First Name</label>
+                    <Field className="form-control" type="text" name="firstName"/>
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label>Last Name</label>
+                    <Field className="form-control" type="text" name="lastName" />
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label>Employment Date</label>
+                    <Field className="form-control" type="date" name="employmentDate"/>
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label>Identity Card Validity</label>
+                    <Field className="form-control" type="date" name="identityCardValidity"/>
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label> Driver License Validity </label>
+                    <Field className="form-control" type="date" name="driverLicenseValidity"/>
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label> Driver Card Validity </label>
+                    <Field className="form-control" type="date" name="driverCardValidity"/>
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label> Driver Qualification Card Validity </label>
+                    <Field className="form-control" type="date" name="driverQualificationCardValidity"/>
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label> Psychological Opinion Validity </label>
+                    <Field className="form-control" type="date" name="psychologicalOpinionValidity"/>
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label> Medical Opinion Validity </label>
+                    <Field className="form-control" type="date" name="medicalOpinionValidity"/>
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label> Skills Sheets Validity </label>
+                    <Field className="form-control" type="date" name="skillsSheetsValidity"/>
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label> Username </label>
+                    <Field className="form-control" type="text" name="username"/>
+                </fieldset>
+                <fieldset className="form-group" style={inputStyle}>
+                    <label> Password </label>
+                    <Field className="form-control" type="text" name="password"/>
+                </fieldset>
+                <button className="btn btn-primary" type="submit">Save</button>
+            </Form>
+        )
+    }
+</Formik>
 		</div>
         )
     }
